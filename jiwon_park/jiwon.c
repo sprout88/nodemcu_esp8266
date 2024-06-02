@@ -4,8 +4,8 @@
 #include <DHT.h>
 
 // WiFi 설정
-const char* ssid = "101-2";    // WiFi 이름 입력
-const char* password = "77777777";    // WiFi 비밀번호 입력
+const char* ssid = "REDACTED";    // WiFi 이름 입력
+const char* password = "REDACTED";    // WiFi 비밀번호 입력
 
 // 미세먼지 API 설정
 String dusturl = "http://openAPI.seoul.go.kr:8088/52414a44616368653132364a67564550/xml/ListAirQualityByDistrictService/1/5/111121/";
