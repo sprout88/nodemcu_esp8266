@@ -1,72 +1,36 @@
-// API 엔드포인트
-const airQualityUrl = "http://openapi.seoul.go.kr:8088/52414a44616368653132364a67564550/xml/ListAirQualityByDistrictService/1/5/111121/";
-const weatherUrl = "http://www.weather.go.kr/w/rss/dfs/hr1-forecast.do?zone=1114057000";
+// app.js
 
-// 데이터를 저장할 배열
-let airQualityData = [];
-let weatherData = [];
+const express = require('express');
+const axios = require('axios');
+const path = require('path');
 
-// 차트를 초기화하는 함수
-function initializeChart(canvasId, labels, data, label) {
-    const ctx = document.getElementById(canvasId).getContext("2d");
-    return new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: label,
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
-                data: data,
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-}
+const app = express();
 
-// API에서 데이터를 가져와서 차트를 업데이트하는 함수
-async function updateCharts() {
-    // 공기 질 데이터 가져오기
-    const airQualityResponse = await fetch(airQualityUrl);
-    const airQualityData = await airQualityResponse.text();
+// 정적 파일을 제공하기 위해 express.static 미들웨어를 사용합니다.
+app.use(express.static(path.join(__dirname, 'public')));
 
-    // 날씨 데이터 가져오기
-    const weatherResponse = await fetch(weatherUrl);
-    const weatherData = await weatherResponse.text();
+// 기본 라우트 설정
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-    // 차트 업데이트
-    updateAirQualityChart(airQualityData);
-    updateWeatherChart(weatherData);
-}
+// 데이터 엔드포인트 설정
+app.get('/data', async (req, res) => {
+    try {
+        // 공기질 데이터 가져오기
+        const airQualityResponse = await axios.get("http://openapi.seoul.go.kr:8088/52414a44616368653132364a67564550/xml/ListAirQualityByDistrictService/1/5/111121/");
+        const airQualityData = airQualityResponse.data;
 
-// 공기 질 차트 업데이트 함수
-function updateAirQualityChart(data) {
-    // 데이터 파싱
-    // TODO: 데이터 파싱 및 처리
+        // 데이터 전송
+        res.json({ airQualityData });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).send("Error fetching data");
+    }
+});
 
-    // 차트 업데이트
-    // TODO: 차트 업데이트
-}
-
-// 날씨 차트 업데이트 함수
-function updateWeatherChart(data) {
-    // 데이터 파싱
-    // TODO: 데이터 파싱 및 처리
-
-    // 차트 업데이트
-    // TODO: 차트 업데이트
-}
-
-// 페이지 로드시 차트 업데이트
-window.onload = function () {
-    updateCharts();
-};
+// 서버를 시작합니다.
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}/`);
+});
