@@ -64,3 +64,30 @@ async function fetchData() {
 }
 
 window.onload = fetchData;
+
+const windowCtx = document.getElementById('windowStatusCanvas').getContext('2d');
+
+        function drawWindowStatus(isOpen) {
+            windowCtx.clearRect(0, 0, windowCtx.canvas.width, windowCtx.canvas.height); // 캔버스를 초기화
+
+            windowCtx.fillStyle = "#fff";
+            windowCtx.fillRect(0, 0, windowCtx.canvas.width, windowCtx.canvas.height);
+
+            windowCtx.strokeStyle = "#000";
+            windowCtx.lineWidth = 2;
+            windowCtx.strokeRect(10, 10, 180, 180);
+
+            windowCtx.font = "20px Arial";
+            windowCtx.fillStyle = "#000";
+            windowCtx.textAlign = "center";
+
+            if (isOpen) {
+                windowCtx.fillText("Window Open", windowCtx.canvas.width / 2, windowCtx.canvas.height / 2);
+            } else {
+                windowCtx.fillText("Window Closed", windowCtx.canvas.width / 2, windowCtx.canvas.height / 2);
+            }
+        }
+
+        // 테스트 용도로 창문 상태 변경 (true: 열림, false: 닫힘)
+        drawWindowStatus(true);  // 창문 열림 상태
+        // setTimeout(() => drawWindowStatus(false), 3000); // 3초 후에 창문 닫힘 상태로 변경
