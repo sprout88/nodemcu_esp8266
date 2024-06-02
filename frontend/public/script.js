@@ -88,5 +88,5 @@ const windowCtx = document.getElementById('windowStatusCanvas').getContext('2d')
             }
         }
 
-        drawWindowStatus(true);
+        drawWindowStatus(false);
         
