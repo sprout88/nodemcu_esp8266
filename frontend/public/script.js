@@ -88,6 +88,5 @@ const windowCtx = document.getElementById('windowStatusCanvas').getContext('2d')
             }
         }
 
-        // 테스트 용도로 창문 상태 변경 (true: 열림, false: 닫힘)
-        drawWindowStatus(true);  // 창문 열림 상태
-        // setTimeout(() => drawWindowStatus(false), 3000); // 3초 후에 창문 닫힘 상태로 변경
+        drawWindowStatus(true);
+        
